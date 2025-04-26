@@ -1,12 +1,12 @@
 # Makefile for rss-reader
 
 # Compiler and flags
-CXX := g++
-CXXFLAGS := -Wall -g -Wextra -std=c++17
+CXX := clang++
+CXXFLAGS := -Wall -ggdb -Wextra -std=c++17
 
 # Target and source files
 TARGET := rss-reader
-SRC := main.cpp
+SRC := rss-reader.cpp main.cpp
 
 # Build target
 $(TARGET): $(SRC)
