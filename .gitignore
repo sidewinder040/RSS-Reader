@@ -1,0 +1,4 @@
+rss-reader
+rss-reader.dSYM
+*.o
+.vscode/*
