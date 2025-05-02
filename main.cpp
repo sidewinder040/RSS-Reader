@@ -1,7 +1,7 @@
 #include<iostream>
 #include "rss-reader.h"
 
-int main(int argc, char const *argv[])
+int main()
 {
     std::cout << "RSS-Reader Prototype" << std::endl;
     std::cout << "====================" << std::endl;

@@ -3,6 +3,8 @@
 # Compiler and flags
 CXX := clang++
 CXXFLAGS := -Wall -ggdb -Wextra -std=c++17
+LDFLAGS := `pkg-config --libs --cflags libcurl tinyxml2`
+CXXFLAGS += $(LDFLAGS)
 
 # Target and source files
 TARGET := rss-reader
