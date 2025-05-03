@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <curl/curl.h>
-#include <tinyxml2.h>
+#include "tinyxml2.h"
 #include <vector>
 
 class RSSReader {
@@ -19,6 +19,8 @@ private:
     std::string feedUrl; // URL of the RSS feed
     std::vector<std::string> feedItems; // Vector to store feed items
     tinyxml2::XMLDocument doc; // XML document object for parsing
-    CURL* curl; // CURL object for fetching the feed
-    CURLcode res; // Result code from CURL operations
+    // CURL* curl; // CURL object for fetching the feed
+    // CURLcode res; // Result code from CURL operations
+
+    static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s);
 };

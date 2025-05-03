@@ -3,51 +3,63 @@
 RSSReader::RSSReader(const std::string& feedUrl) {
     // Constructor implementation
    std::cout << "RSSReader initialized with feed URL: " << feedUrl << std::endl;
+    this->feedUrl = feedUrl;
 }
 
 void RSSReader::FetchFeed()
 {
     // Initialize CURL
+    CURL* curl;
+    CURLcode res;
+    std::string readBuffer;
+
     curl = curl_easy_init();
-    if (curl) {
-        // Set the URL of the RSS feed
+    if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, feedUrl.c_str());
-        // Set the write function to handle the response data
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
-        // Perform the request
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         res = curl_easy_perform(curl);
-        // Check for errors
-        if (res != CURLE_OK) {
-            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-        }
-        // Cleanup
         curl_easy_cleanup(curl);
-    } else {
-        std::cerr << "Failed to initialize CURL" << std::endl;
-    }
-    // Parse the XML response
-    if (doc.LoadFile("response.xml") != tinyxml2::XML_SUCCESS) {
-        std::cerr << "Failed to load XML file" << std::endl;
-        return;
-    }
-    // Here you would typically parse the XML document and extract feed items
-    // For demonstration, we'll just print a placeholder message
-    std::cout << "Parsing XML response..." << std::endl;
-    // In a real implementation, you would replace the above with actual parsing logic
-    // For example, you might use tinyxml2 to iterate over the XML elements and extract data:
-    // tinyxml2::XMLElement* item = doc.FirstChildElement("rss")->FirstChildElement("channel")->FirstChildElement("item");
 
+        if(res != CURLE_OK) {
+            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+            // return 1;
+        }
+    }
 
-    // while (item) {
-    //     const char* title = item->FirstChildElement("title")->GetText();
-    //     if (title) {
-    //         feedItems.push_back(title);
-    //     }
-    //     item = item->NextSiblingElement("item");
-    // }
-    // For demonstration, we'll just add some dummy feed items
-    feedItems.push_back("Example Item 1");
-    feedItems.push_back("Example Item 2");
+    tinyxml2::XMLDocument doc;
+    if (doc.Parse(readBuffer.c_str()) != tinyxml2::XML_SUCCESS) {
+        std::cerr << "Failed to parse XML" << std::endl;
+        // return 1;
+    }
+
+    tinyxml2::XMLElement* root = doc.FirstChildElement("rss");
+    if (!root) {
+        std::cerr << "No RSS element found" << std::endl;
+        // return 1;
+    }
+
+    tinyxml2::XMLElement* channel = root->FirstChildElement("channel");
+    if (!channel) {
+        std::cerr << "No channel element found" << std::endl;
+        // return 1;
+    }
+
+    tinyxml2::XMLElement* item = channel->FirstChildElement("item");
+    while (item) {
+        const char* title = item->FirstChildElement("title")->GetText();
+        const char* link = item->FirstChildElement("link")->GetText();
+        const char* description = item->FirstChildElement("description")->GetText();
+
+        std::cout << "Title: " << (title ? title : "No title") << std::endl;
+        std::cout << "Link: " << (link ? link : "No link") << std::endl;
+        std::cout << "Description: " << (description ? description : "No description") << std::endl;
+        std::cout << std::endl;
+
+        item = item->NextSiblingElement("item");
+    }
+    std::cout << "Feed fetched and parsed successfully." << std::endl;
+    
 }
 
 void RSSReader::displayFeedItems() const {
@@ -62,4 +74,11 @@ void RSSReader::displayFeedItems() const {
     // for (const auto& item : feedItems) {
     //     std::cout << "Feed item: " << item.title << std::endl;
     // }
+}
+
+// Callback function to write data fetched by libcurl
+size_t RSSReader::WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s) {
+    size_t totalSize = size * nmemb;
+    s->append((char*)contents, totalSize);
+    return totalSize;
 }
