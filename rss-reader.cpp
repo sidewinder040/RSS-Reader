@@ -46,11 +46,15 @@ void RSSReader::FetchFeed()
     }
 
     tinyxml2::XMLElement* item = channel->FirstChildElement("item");
+
+    // TODO: Parse the feed items and store them in the feedItems vector
     while (item) {
         const char* title = item->FirstChildElement("title")->GetText();
         const char* link = item->FirstChildElement("link")->GetText();
         const char* description = item->FirstChildElement("description")->GetText();
 
+
+        // TODO: Move the output to displayFeedItems() method
         std::cout << "Title: " << (title ? title : "No title") << std::endl;
         std::cout << "Link: " << (link ? link : "No link") << std::endl;
         std::cout << "Description: " << (description ? description : "No description") << std::endl;
