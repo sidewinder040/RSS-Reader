@@ -53,31 +53,30 @@ void RSSReader::FetchFeed()
         const char* link = item->FirstChildElement("link")->GetText();
         const char* description = item->FirstChildElement("description")->GetText();
 
-
-        // TODO: Move the output to displayFeedItems() method
-        std::cout << "Title: " << (title ? title : "No title") << std::endl;
-        std::cout << "Link: " << (link ? link : "No link") << std::endl;
-        std::cout << "Description: " << (description ? description : "No description") << std::endl;
-        std::cout << std::endl;
-
+        // Create a feed_item object and add it to the feedItems vector
+        feed_item newItem(title ? title : "", link ? link : "", description ? description : "");
+        feedItems.push_back(newItem); // Store the title in the vector        
+        
         item = item->NextSiblingElement("item");
     }
-    std::cout << "Feed fetched and parsed successfully." << std::endl;
-    
+    std::cout << "Feed fetched and parsed successfully." << std::endl;   
 }
 
 void RSSReader::displayFeedItems() const {
     std::cout << "Displaying feed items..." << std::endl;
-    // Here you would typically iterate over the parsed feed items and display them
-    // For demonstration, we'll just print a placeholder message
-    std::cout << "Feed item 1: Example Item 1" << std::endl;
-    std::cout << "Feed item 2: Example Item 2" << std::endl;
-    std::cout << "Feed item 3: Example Item 3" << std::endl;
-    // In a real implementation, you would replace the above with actual feed item data
-    // For example, you might have a vector of feed items and iterate over it:
-    // for (const auto& item : feedItems) {
-    //     std::cout << "Feed item: " << item.title << std::endl;
-    // }
+    // Iterate over the feed items and display them
+    for (const auto& item : feedItems) {
+        // Assuming feed_item has a constructor that takes a string
+        // Assuming feed_item has a method to display its contents
+        // For now, just print the title
+        // std::cout << "Feed item: " << item.title << std::endl;
+        // std::cout << "Feed item: " << item.link << std::endl;
+        // std::cout << "Feed item: " << item.description << std::endl;
+        std::cout << "Feed item: " << item.title << std::endl;
+        std::cout << "Link: " << item.link << std::endl;
+        std::cout << "Description: " << item.description << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+    }
 }
 
 // Callback function to write data fetched by libcurl
