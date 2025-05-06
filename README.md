@@ -9,4 +9,4 @@
 ## Ideas
 
 Summary of headlines with item ID
-Display description of item ID for further details.
+Display description of item ID, then usse the ID No. to display further details.
