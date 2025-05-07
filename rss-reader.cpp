@@ -66,15 +66,10 @@ void RSSReader::displayFeedItems() const {
     std::cout << "Displaying feed items..." << std::endl;
     // Iterate over the feed items and display them
     for (const auto& item : feedItems) {
-        // Assuming feed_item has a constructor that takes a string
-        // Assuming feed_item has a method to display its contents
-        // For now, just print the title
-        // std::cout << "Feed item: " << item.title << std::endl;
-        // std::cout << "Feed item: " << item.link << std::endl;
-        // std::cout << "Feed item: " << item.description << std::endl;
-        std::cout << "Feed item: " << item.title << std::endl;
-        std::cout << "Link: " << item.link << std::endl;
+
+        std::cout << "Title: " << item.title << std::endl;
         std::cout << "Description: " << item.description << std::endl;
+        std::cout << "Link: " << item.link << std::endl;
         std::cout << "----------------------------------------" << std::endl;
     }
 }
