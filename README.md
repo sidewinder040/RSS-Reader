@@ -5,6 +5,7 @@
 1) Create an Feed Item object.
 2) Feed Object.
 3) Vector of feeds. Config file to store feeds.
+4) Maybe add fmt library for better feed formating (especially links)
 
 ## Ideas
 
