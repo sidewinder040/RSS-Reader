@@ -8,7 +8,7 @@ CXXFLAGS += $(LDFLAGS)
 
 # Target and source files
 TARGET := rss-reader
-SRC := feed-item.cpp rss-reader.cpp main.cpp
+SRC := feed.cpp feed-item.cpp rss-reader.cpp main.cpp
 
 # Build target
 $(TARGET): $(SRC)
