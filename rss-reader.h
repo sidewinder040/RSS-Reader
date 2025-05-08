@@ -4,6 +4,7 @@
 #include <curl/curl.h>
 #include "tinyxml2.h"
 #include <vector>
+#include "feed.h"
 #include "feed-item.h"
 
 class RSSReader {
