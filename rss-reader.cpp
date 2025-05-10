@@ -3,12 +3,28 @@
 RSSReader::RSSReader(const std::string& feedUrl) {
 
     // TODO: Initialize feeds with a Vector of feed objects
-    
+
     // Constructor implementation
    std::cout << "RSSReader initialized with feed URL: " << feedUrl << std::endl;
 
     // Initialize the feed URL
     this->feedUrl = feedUrl;
+}
+
+void RSSReader::AddFeed(const Feed& feed) {
+    feeds.push_back(feed);
+}
+void RSSReader::RemoveFeed(const std::string& feedUrl) {
+    // Find the feed with the given URL and remove it from the vector
+    auto it = std::remove_if(feeds.begin(), feeds.end(), [&feedUrl](const Feed& feed) {
+        return feed.FeedName == feedUrl;
+    });
+    if (it != feeds.end()) {
+        feeds.erase(it, feeds.end());
+        std::cout << "Feed removed: " << feedUrl << std::endl;
+    } else {
+        std::cout << "Feed not found: " << feedUrl << std::endl;
+    }
 }
 
 void RSSReader::FetchFeed()

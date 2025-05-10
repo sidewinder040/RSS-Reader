@@ -3,3 +3,8 @@
 Feed::Feed(/* args */)
 {
 }
+
+void Feed::SetFeedScore(EnumScore score)
+{
+    FeedScore = score;
+}
