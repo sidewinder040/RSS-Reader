@@ -1,8 +1,13 @@
 #include "rss-reader.h"
 
 RSSReader::RSSReader(const std::string& feedUrl) {
+
+    // TODO: Initialize feeds with a Vector of feed objects
+    
     // Constructor implementation
    std::cout << "RSSReader initialized with feed URL: " << feedUrl << std::endl;
+
+    // Initialize the feed URL
     this->feedUrl = feedUrl;
 }
 
