@@ -71,14 +71,17 @@ void RSSReader::FetchFeed()
     // TODO: Parse the feed items and store them in the feedItems vector
     while (item) {
         const char* title = item->FirstChildElement("title")->GetText();
+        const char* pubDate = item->FirstChildElement("pubDate")->GetText();
         const char* link = item->FirstChildElement("link")->GetText();
         const char* description = item->FirstChildElement("description")->GetText();
 
         // Create a feed_item object and add it to the feedItems vector
-        feed_item newItem(title ? title : "", link ? link : "", description ? description : "");
+        feed_item newItem(title ? title : "", pubDate ? pubDate : "" ,link ? link : "", description ? description : "");
         feedItems.push_back(newItem); // Store the title in the vector        
         
         item = item->NextSiblingElement("item");
+        // TODO: Add special character handling for title, link, and description e.g ampersant, apostrophe, etc.
+
     }
     std::cout << "Feed fetched and parsed successfully." << std::endl;   
 }
@@ -89,6 +92,7 @@ void RSSReader::displayFeedItems() const {
     for (const auto& item : feedItems) {
 
         std::cout << "Title: " << item.title << std::endl;
+        std::cout << "Publication Date: " << item.pubDate << std::endl;
         std::cout << "Description: " << item.description << std::endl;
         std::cout << "Link: " << item.link << std::endl;
         std::cout << "----------------------------------------" << std::endl;
