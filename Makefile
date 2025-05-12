@@ -3,7 +3,8 @@
 # Compiler and flags
 CXX := clang++
 CXXFLAGS := -Wall -ggdb -Wextra -std=c++17
-LDFLAGS := `pkg-config --libs --cflags libcurl tinyxml2`
+LIBS := fmt libcurl tinyxml2
+LDFLAGS := `pkg-config --libs --cflags $(LIBS)`
 CXXFLAGS += $(LDFLAGS)
 
 # Target and source files
