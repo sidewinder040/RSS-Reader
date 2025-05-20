@@ -6,11 +6,16 @@
 #include <vector>
 #include "feed.h"
 #include "feed-item.h"
+#include <fmt/base.h>
+#include <fmt/color.h>
+#include <fmt/format.h>
 
 class RSSReader {
 public:
-    // Constructor
-    RSSReader(const std::string& feedUrl);
+    // Constructors
+    // Default constructor
+    RSSReader();
+    RSSReader(const std::string& feedName, const std::string& feedUrl);
     
     // Method to fetch and parse the RSS feed
     void FetchFeed();

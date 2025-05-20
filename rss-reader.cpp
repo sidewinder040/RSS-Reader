@@ -1,8 +1,22 @@
 #include "rss-reader.h"
 
-RSSReader::RSSReader(const std::string& feedUrl) {
+// Constructor implementation
+// Default constructor
+RSSReader::RSSReader() {
+    // Initialize the feed URLs
+    // Some example feeds
+    Feed feed1("Techcrunch", "https://techcrunch.com/feed");
+    Feed feed2("BBC", "http://feeds.bbci.co.uk/news/rss.xml");
+    Feed feed3("CNN", "http://rss.cnn.com/rss/edition.rss");
+    feeds.push_back(feed1);
+    feeds.push_back(feed2);
+    feeds.push_back(feed3);
+}    
 
+RSSReader::RSSReader(const std::string& feedName, const std::string& feedUrl) {
     // TODO: Initialize feeds with a Vector of feed objects
+    // Add given feed URL to the feeds vector
+    AddFeed(Feed(feedName, feedUrl));
 
     // Constructor implementation
    std::cout << "RSSReader initialized with feed URL: " << feedUrl << std::endl;
