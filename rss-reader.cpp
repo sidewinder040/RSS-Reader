@@ -104,11 +104,22 @@ void RSSReader::displayFeedItems() const {
     std::cout << "Displaying feed items..." << std::endl;
     // Iterate over the feed items and display them
     for (const auto& item : feedItems) {
+        // Display the feed item details
+        // Title
+        fmt::print(fmt::emphasis::bold, "Title: ");
+        fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}{}{}\n", RED, item.title, RESET);
 
-        std::cout << "Title: " << item.title << std::endl;
-        std::cout << "Publication Date: " << item.pubDate << std::endl;
-        std::cout << "Description: " << item.description << std::endl;
-        std::cout << "Link: " << item.link << std::endl;
+        // Publication Date
+        fmt::print(fmt::emphasis::bold, "Publication Date: ");
+        fmt::print("{}\n", item.pubDate);
+
+        // Description
+        fmt::print(fmt::emphasis::bold, "Description: ");
+        fmt::print("{}\n", item.description);
+                
+        // Link
+        fmt::print(fmt::emphasis::bold, "Link: ");
+        fmt::print(fmt::emphasis::underline, "{}{}{}\n", BLUE, item.link, RESET);
         std::cout << "----------------------------------------" << std::endl;
     }
 }

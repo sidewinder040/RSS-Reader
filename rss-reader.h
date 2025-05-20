@@ -31,8 +31,12 @@ private:
     std::vector<Feed> feeds; // Vector to store feed objects
     std::vector<feed_item> feedItems; // Vector to store feed items
     tinyxml2::XMLDocument doc; // XML document object for parsing
-    // CURL* curl; // CURL object for fetching the feed
-    // CURLcode res; // Result code from CURL operations
+
+    // ANSI escape codes for colors
+    const char* RED = "\033[31m";
+    // constexpr const char* GREEN = "\033[32m";
+    const char* BLUE = "\033[34m";
+    const char* RESET = "\033[0m";
 
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s);
 };
