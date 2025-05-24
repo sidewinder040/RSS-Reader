@@ -17,13 +17,13 @@ int main()
 
     // Add some Feed objects to the RSSReader
     RSSReader rssReader;
-    rssReader.AddFeed(Feed("https://techcrunch.com/feed", "Techcrunch"));
-    rssReader.AddFeed(Feed("http://feeds.bbci.co.uk/news/rss.xml",  "BBC News"));
-    rssReader.AddFeed(Feed("http://rss.cnn.com/rss/edition.rss", "CNN"));
+    rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "Techcrunch"));
+    rssReader.AddFeed(Feed("https://www.wired.com/feed/rss",  "Wired Top Stories"));
+    rssReader.AddFeed(Feed("http://feeds.windowscentral.com/wmexperts", "Windows Central"));
 
     std::cout << "Fetching RSS feed..." << std::endl;
     // RSSReader reader("Techchrunch", "https://techcrunch.com/feed/");
-    rssReader.FetchFeed(0); // Fetch the feed using the first feed URL
+    rssReader.FetchFeed(2); // Fetch the feed using the first feed URL
     std::cout << "Parsing RSS feed..." << std::endl;
     rssReader.displayFeedItems();
     std::cout << "RSS feed fetched and displayed." << std::endl;
