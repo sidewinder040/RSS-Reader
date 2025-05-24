@@ -14,7 +14,7 @@ RSSReader::RSSReader() {
 }    
 
 RSSReader::RSSReader(const std::string& feedName, const std::string& feedUrl) {
-    // TODO: Initialize feeds with a Vector of feed objects
+    // TODO: Initialize feeds with a Vector of feed objects from a file or database
     // Add given feed URL to the feeds vector
     AddFeed(Feed(feedName, feedUrl));
 
@@ -28,16 +28,16 @@ RSSReader::RSSReader(const std::string& feedName, const std::string& feedUrl) {
 void RSSReader::AddFeed(const Feed& feed) {
     feeds.push_back(feed);
 }
-void RSSReader::RemoveFeed(const std::string& feedUrl) {
+void RSSReader::RemoveFeed(const std::string& feedName) {
     // Find the feed with the given URL and remove it from the vector
-    auto it = std::remove_if(feeds.begin(), feeds.end(), [&feedUrl](const Feed& feed) {
-        return feed.FeedName == feedUrl;
+    auto it = std::remove_if(feeds.begin(), feeds.end(), [&feedName](const Feed& feed) {
+        return feed.FeedName == feedName;
     });
     if (it != feeds.end()) {
         feeds.erase(it, feeds.end());
-        std::cout << "Feed removed: " << feedUrl << std::endl;
+        std::cout << "Feed removed: " << feedName<< std::endl;
     } else {
-        std::cout << "Feed not found: " << feedUrl << std::endl;
+        std::cout << "Feed not found: " << feedName << std::endl;
     }
 }
 
@@ -59,14 +59,8 @@ void RSSReader::FetchFeed(int feedIndex)
     CURL* curl;
     CURLcode res;
     std::string readBuffer;
-    // feedUrl = feedUrl.empty() ? "https://techcrunch.com/feed/" : feedUrl; // Default to TechCrunch if no URL is provided
     
-    std::string feedUrl1 = "https://www.thurrott.com/blog/rss"; // Example feed URL, can be replaced with dynamic input
-    strcmp(feedUrl.c_str(), feedUrl1.c_str()) == 0 ? std::cout << "Sting URLs match " << std::endl 
-        : std::cout << "URLs are different " << std::endl;
-    std::cout << "Feed URL literal:\t|" << feedUrl1 << "|" << std::endl;
-    std::cout << "Feed URL from Value:\t|" << feedUrl << "|" << std::endl;
-
+    // Initialize libcurl
     curl = curl_easy_init();
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, feedUrl.c_str()); // Set the feed URL
