@@ -18,8 +18,8 @@ public:
     RSSReader(const std::string& feedName, const std::string& feedUrl);
     
     // Method to fetch and parse the RSS feed
-    void FetchFeed();
-
+    void FetchFeed(int feedIndex = 0); // Default to the first feed if no index is provided
+    
     // Method to display the feed items
     void displayFeedItems() const;
 

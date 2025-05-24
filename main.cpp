@@ -14,14 +14,21 @@ int main()
 {
     std::cout << "RSS-Reader Prototype" << std::endl;
     std::cout << "====================" << std::endl;
+
+    // Add some Feed objects to the RSSReader
+    RSSReader rssReader;
+    rssReader.AddFeed(Feed("https://techcrunch.com/feed", "Techcrunch"));
+    rssReader.AddFeed(Feed("http://feeds.bbci.co.uk/news/rss.xml",  "BBC News"));
+    rssReader.AddFeed(Feed("http://rss.cnn.com/rss/edition.rss", "CNN"));
+
     std::cout << "Fetching RSS feed..." << std::endl;
-    RSSReader reader("Techchrunch", "https://techcrunch.com/feed/");
-    reader.FetchFeed();
+    // RSSReader reader("Techchrunch", "https://techcrunch.com/feed/");
+    rssReader.FetchFeed(0); // Fetch the feed using the first feed URL
     std::cout << "Parsing RSS feed..." << std::endl;
-    reader.displayFeedItems();
+    rssReader.displayFeedItems();
     std::cout << "RSS feed fetched and displayed." << std::endl;
     
     // fmt underline and color blue
-    fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}http://www.google.com\n{}", BLUE, RESET);
+    fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}https://www.google.com\n{}", BLUE, RESET);
     return 0;
 }

@@ -5,12 +5,12 @@
 RSSReader::RSSReader() {
     // Initialize the feed URLs
     // Some example feeds
-    Feed feed1("Techcrunch", "https://techcrunch.com/feed");
-    Feed feed2("BBC", "http://feeds.bbci.co.uk/news/rss.xml");
-    Feed feed3("CNN", "http://rss.cnn.com/rss/edition.rss");
-    feeds.push_back(feed1);
-    feeds.push_back(feed2);
-    feeds.push_back(feed3);
+    // Feed feed1("Techcrunch", "https://techcrunch.com/feed");
+    // Feed feed2("BBC", "http://feeds.bbci.co.uk/news/rss.xml");
+    // Feed feed3("CNN", "http://rss.cnn.com/rss/edition.rss");
+    // feeds.push_back(feed1);
+    // feeds.push_back(feed2);
+    // feeds.push_back(feed3);
 }    
 
 RSSReader::RSSReader(const std::string& feedName, const std::string& feedUrl) {
@@ -41,42 +41,60 @@ void RSSReader::RemoveFeed(const std::string& feedUrl) {
     }
 }
 
-void RSSReader::FetchFeed()
+void RSSReader::FetchFeed(int feedIndex) 
 {
+    // Check if the feed index is valid
+    if (feedIndex < 0 || feedIndex >= (int)feeds.size()) {
+        std::cout << "Invalid feed index. Using default feed URL." << std::endl;
+        feedIndex = 0; // Default to the first feed if index is invalid
+    }
+    
+    // Get the feed URL from the feeds vector
+    feedUrl = feeds[feedIndex].GetFeedUrl();
+        
+    // Fetch and parse the RSS feed
+    std::cout << "Fetching RSS feed from: " << feedUrl << std::endl;
+
     // Initialize CURL
     CURL* curl;
     CURLcode res;
     std::string readBuffer;
+    // feedUrl = feedUrl.empty() ? "https://techcrunch.com/feed/" : feedUrl; // Default to TechCrunch if no URL is provided
+    
+    feedUrl = "https://techcrunch.com/feed/"; // Example feed URL, can be replaced with dynamic input
+    std::cout << "Feed URL: |" << feedUrl << "|" << std::endl;
 
     curl = curl_easy_init();
     if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, feedUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, feedUrl.c_str()); // Set the feed URL
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
 
         if(res != CURLE_OK) {
-            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+            std::cout << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
             // return 1;
         }
     }
 
+    // std::cout << readBuffer << std::endl; // Print the fetched feed content
+
     tinyxml2::XMLDocument doc;
     if (doc.Parse(readBuffer.c_str()) != tinyxml2::XML_SUCCESS) {
-        std::cerr << "Failed to parse XML" << std::endl;
+        std::cout << "Failed to parse XML" << std::endl;
         // return 1;
     }
 
     tinyxml2::XMLElement* root = doc.FirstChildElement("rss");
     if (!root) {
-        std::cerr << "No RSS element found" << std::endl;
+        std::cout << "No RSS element found" << std::endl;
         // return 1;
     }
 
     tinyxml2::XMLElement* channel = root->FirstChildElement("channel");
     if (!channel) {
-        std::cerr << "No channel element found" << std::endl;
+        std::cout << "No channel element found" << std::endl;
         // return 1;
     }
 
@@ -94,7 +112,7 @@ void RSSReader::FetchFeed()
         feedItems.push_back(newItem); // Store the title in the vector        
         
         item = item->NextSiblingElement("item");
-        // TODO: Add special character handling for title, link, and description e.g ampersant, apostrophe, etc.
+        // TODO: Add special character handling for title, link, and description e.g ampersand, apostrophe, etc.
 
     }
     std::cout << "Feed fetched and parsed successfully." << std::endl;   

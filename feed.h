@@ -16,11 +16,11 @@ public:
     Feed(/* args */);
 
     std::string FeedName; // Name of the feed
-    Feed(const std::string& feedUrl, const std::string& name)
+    Feed(std::string feedUrl, std::string name)
         : FeedUrl(feedUrl), FeedName(name) { } // Constructor to initialize the feed URL
     
     ~Feed() { }
-
+    std::string GetFeedUrl() { return FeedUrl; } // Get the feed URL
     void SetFeedScore(EnumScore score); // Set the feed score
 
 };
