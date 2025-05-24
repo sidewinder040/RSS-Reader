@@ -61,8 +61,11 @@ void RSSReader::FetchFeed(int feedIndex)
     std::string readBuffer;
     // feedUrl = feedUrl.empty() ? "https://techcrunch.com/feed/" : feedUrl; // Default to TechCrunch if no URL is provided
     
-    feedUrl = "https://techcrunch.com/feed/"; // Example feed URL, can be replaced with dynamic input
-    std::cout << "Feed URL: |" << feedUrl << "|" << std::endl;
+    std::string feedUrl1 = "https://www.thurrott.com/blog/rss"; // Example feed URL, can be replaced with dynamic input
+    strcmp(feedUrl.c_str(), feedUrl1.c_str()) == 0 ? std::cout << "Sting URLs match " << std::endl 
+        : std::cout << "URLs are different " << std::endl;
+    std::cout << "Feed URL literal:\t|" << feedUrl1 << "|" << std::endl;
+    std::cout << "Feed URL from Value:\t|" << feedUrl << "|" << std::endl;
 
     curl = curl_easy_init();
     if(curl) {

@@ -20,7 +20,7 @@ public:
         : FeedUrl(feedUrl), FeedName(name) { } // Constructor to initialize the feed URL
     
     ~Feed() { }
-    std::string GetFeedUrl() { return FeedUrl; } // Get the feed URL
+    std::string GetFeedUrl() const { return FeedUrl; } // Get the feed URL
     void SetFeedScore(EnumScore score); // Set the feed score
 
 };

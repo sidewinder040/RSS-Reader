@@ -19,7 +19,10 @@ public:
     
     // Method to fetch and parse the RSS feed
     void FetchFeed(int feedIndex = 0); // Default to the first feed if no index is provided
-    
+
+    // Method to get available feeds
+    std::vector<Feed> getAvailableFeeds() const { return feeds; }
+
     // Method to display the feed items
     void displayFeedItems() const;
 
