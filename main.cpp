@@ -20,7 +20,10 @@ int main()
     rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "Techcrunch"));
     rssReader.AddFeed(Feed("https://www.wired.com/feed/rss",  "Wired Top Stories"));
     rssReader.AddFeed(Feed("http://feeds.windowscentral.com/wmexperts", "Windows Central"));
-
+    rssReader.AddFeed(Feed("https://www.bleepingcomputer.com/feed/", "Bleeping Computer"));
+    rssReader.AddFeed(Feed("https://www.cnet.com/rss/news/", "CNET News"));
+    rssReader.AddFeed(Feed("https://www.zdnet.com/news/rss.xml", "ZDNet News"));
+    
     // Display the available feeds
     std::cout << "Available Feeds:" << std::endl;
     int index = 1; // Index for displaying feeds
