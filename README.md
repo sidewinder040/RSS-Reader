@@ -9,10 +9,11 @@ This RSS Reader is by expanding a suggestion for a basic RSS reader suggested by
 
 ## To Do Items
 
-1) Feed Object for multiple feed sources capability.
-2) Vector of feeds. Config file to store feeds.
-3) Store feeds to a file.
-4) Maybe add fmt library for better feed formating (especially links).
+- [x] Feed Object for multiple feed sources capability.
+- [ ] A menu for Selecting, Adding, Removing and Rating feeds.
+- [x] Vector of feeds. 
+- [ ] Store feeds in a file and retrieve them on startup.
+- [x] Maybe add fmt library for better feed formating (especially links).
 
 ## Ideas
 

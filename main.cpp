@@ -52,18 +52,19 @@ int main()
     std::string chosenUrl = rssReader.getAvailableFeeds()[feedIndex - 1].GetFeedUrl();
     std::string chosenName = rssReader.getAvailableFeeds()[feedIndex - 1].FeedName;
     std::cout << "Display Feed: " << chosenName << " (" << chosenUrl << ")" << std::endl;
-    // rssReader.FetchFeed(feedIndex -1); // Fetch the feed using the first feed URL
-    // rssReader.displayFeedItems();
-    std::cout << "Test removing a feed..." << std::endl;
-    rssReader.RemoveFeed(chosenName); // Remove the chosen feed
-    std::cout << "Available Feeds after removal:" << std::endl;
-    ListAvailableFeeds(rssReader); // List available feeds after removal
+    rssReader.FetchFeed(feedIndex -1); // Fetch the feed using the first feed URL
+    rssReader.displayFeedItems();
+    // Uncomment the following lines to enable feed removal and addition tests
+    // std::cout << "Test removing a feed..." << std::endl;
+    // rssReader.RemoveFeed(chosenName); // Remove the chosen feed
+    // std::cout << "Available Feeds after removal:" << std::endl;
+    // ListAvailableFeeds(rssReader); // List available feeds after removal
 
-    // Test adding a new feed
-    std::cout << "Adding a new feed..." << std::endl;
-    rssReader.AddFeed(Feed("https://www.example.com/rss", "Example Feed"));
-    std::cout << "Available Feeds after adding a new feed:" << std::endl;
-    ListAvailableFeeds(rssReader); // List available feeds after adding a new feed
+    // // Test adding a new feed
+    // std::cout << "Adding a new feed..." << std::endl;
+    // rssReader.AddFeed(Feed("https://www.example.com/rss", "Example Feed"));
+    // std::cout << "Available Feeds after adding a new feed:" << std::endl;
+    // ListAvailableFeeds(rssReader); // List available feeds after adding a new feed
     return 0;
 }
 
