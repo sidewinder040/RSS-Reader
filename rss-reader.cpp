@@ -74,6 +74,12 @@ void RSSReader::FetchFeed(int feedIndex)
             // return 1;
         }
     }
+    // Check if the readBuffer is empty
+    if (readBuffer.empty()) {
+        std::cout << "No data fetched from the selected feed URL." << std::endl;
+        // return 1;
+        return;
+    }   
 
     // std::cout << readBuffer << std::endl; // Print the fetched feed content
 
@@ -116,6 +122,12 @@ void RSSReader::FetchFeed(int feedIndex)
 }
 
 void RSSReader::displayFeedItems() const {
+    // Check if there are any feed items to display
+    if (feedItems.empty()) {
+        std::cout << "No feed items available to display." << std::endl;
+        return;
+    }
+    // Display the feed items
     std::cout << "Displaying feed items..." << std::endl;
     // Iterate over the feed items and display them
     for (const auto& item : feedItems) {

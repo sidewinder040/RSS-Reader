@@ -23,7 +23,12 @@ int main()
     rssReader.AddFeed(Feed("https://www.bleepingcomputer.com/feed/", "Bleeping Computer"));
     rssReader.AddFeed(Feed("https://www.cnet.com/rss/news/", "CNET News"));
     rssReader.AddFeed(Feed("https://www.zdnet.com/news/rss.xml", "ZDNet News"));
-    
+    rssReader.AddFeed(Feed("https://feeds.macrumors.com/MacRumors-All", "Mac Rumors"));
+    rssReader.AddFeed(Feed("https://www.theverge.com/rss/index.xml", "The Verge"));
+    rssReader.AddFeed(Feed("https://www.engadget.com/rss.xml", "Engadget"));
+    rssReader.AddFeed(Feed("https://www.techradar.com/rss", "TechRadar"));
+    rssReader.AddFeed(Feed("https://www.tomshardware.com/feeds/all", "Tom's Hardware"));
+    rssReader.AddFeed(Feed("https://www.thurrott.com/blog/rss", "Thurrott Blog"));
     // Display the available feeds
     std::cout << "Available Feeds:" << std::endl;
     int index = 1; // Index for displaying feeds
@@ -53,11 +58,11 @@ int main()
     std::string chosenName = rssReader.getAvailableFeeds()[feedIndex - 1].FeedName;
     std::cout << "Display Feed: " << chosenName << " (" << chosenUrl << ")" << std::endl;
     rssReader.FetchFeed(feedIndex -1); // Fetch the feed using the first feed URL
-    std::cout << "Parsing RSS feed..." << std::endl;
+    // std::cout << "Parsing RSS feed..." << std::endl;
     rssReader.displayFeedItems();
-    std::cout << "RSS feed fetched and displayed." << std::endl;
+    // std::cout << "RSS feed fetched and displayed." << std::endl;
     
     // fmt underline and color blue
-    fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}https://www.google.com\n{}", BLUE, RESET);
+    // fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}https://www.google.com\n{}", BLUE, RESET);
     return 0;
 }
