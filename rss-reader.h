@@ -6,7 +6,7 @@
 #include <vector>
 #include "feed.h"
 #include "feed-item.h"
-#include <fmt/base.h>
+#include <fmt/core.h>
 #include <fmt/color.h>
 #include <fmt/format.h>
 
