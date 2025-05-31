@@ -1,47 +1,103 @@
 #include "rss-reader.h"
 
-RSSReader::RSSReader(const std::string& feedUrl) {
+// Constructor implementation
+// Default constructor
+RSSReader::RSSReader() {
+    // Initialize the feed URLs
+    // Some example feeds
+    // Feed feed1("Techcrunch", "https://techcrunch.com/feed");
+    // Feed feed2("BBC", "http://feeds.bbci.co.uk/news/rss.xml");
+    // Feed feed3("CNN", "http://rss.cnn.com/rss/edition.rss");
+    // feeds.push_back(feed1);
+    // feeds.push_back(feed2);
+    // feeds.push_back(feed3);
+}    
+
+RSSReader::RSSReader(const std::string& feedName, const std::string& feedUrl) {
+    // TODO: Initialize feeds with a Vector of feed objects from a file or database
+    // Add given feed URL to the feeds vector
+    AddFeed(Feed(feedName, feedUrl));
+
     // Constructor implementation
    std::cout << "RSSReader initialized with feed URL: " << feedUrl << std::endl;
+
+    // Initialize the feed URL
     this->feedUrl = feedUrl;
 }
 
-void RSSReader::FetchFeed()
+void RSSReader::AddFeed(const Feed& feed) {
+    feeds.push_back(feed);
+}
+void RSSReader::RemoveFeed(const std::string& feedName) {
+    // Find the feed with the given URL and remove it from the vector
+    auto it = std::remove_if(feeds.begin(), feeds.end(), [&feedName](const Feed& feed) {
+        return feed.FeedName == feedName;
+    });
+    if (it != feeds.end()) {
+        feeds.erase(it, feeds.end());
+        std::cout << "Feed removed: " << feedName<< std::endl;
+    } else {
+        std::cout << "Feed not found: " << feedName << std::endl;
+    }
+}
+
+void RSSReader::FetchFeed(int feedIndex) 
 {
+    // Check if the feed index is valid
+    if (feedIndex < 0 || feedIndex >= (int)feeds.size()) {
+        std::cout << "Invalid feed index. Using default feed URL." << std::endl;
+        feedIndex = 0; // Default to the first feed if index is invalid
+    }
+    
+    // Get the feed URL from the feeds vector
+    feedUrl = feeds[feedIndex].GetFeedUrl();
+        
+    // Fetch and parse the RSS feed
+    std::cout << "Fetching RSS feed from: " << feedUrl << std::endl;
+
     // Initialize CURL
     CURL* curl;
     CURLcode res;
     std::string readBuffer;
-
+    
+    // Initialize libcurl
     curl = curl_easy_init();
     if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, feedUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, feedUrl.c_str()); // Set the feed URL
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
 
         if(res != CURLE_OK) {
-            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+            std::cout << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
             // return 1;
         }
     }
+    // Check if the readBuffer is empty
+    if (readBuffer.empty()) {
+        std::cout << "No data fetched from the selected feed URL." << std::endl;
+        // return 1;
+        return;
+    }   
+
+    // std::cout << readBuffer << std::endl; // Print the fetched feed content
 
     tinyxml2::XMLDocument doc;
     if (doc.Parse(readBuffer.c_str()) != tinyxml2::XML_SUCCESS) {
-        std::cerr << "Failed to parse XML" << std::endl;
+        std::cout << "Failed to parse XML" << std::endl;
         // return 1;
     }
 
     tinyxml2::XMLElement* root = doc.FirstChildElement("rss");
     if (!root) {
-        std::cerr << "No RSS element found" << std::endl;
+        std::cout << "No RSS element found" << std::endl;
         // return 1;
     }
 
     tinyxml2::XMLElement* channel = root->FirstChildElement("channel");
     if (!channel) {
-        std::cerr << "No channel element found" << std::endl;
+        std::cout << "No channel element found" << std::endl;
         // return 1;
     }
 
@@ -50,26 +106,47 @@ void RSSReader::FetchFeed()
     // TODO: Parse the feed items and store them in the feedItems vector
     while (item) {
         const char* title = item->FirstChildElement("title")->GetText();
+        const char* pubDate = item->FirstChildElement("pubDate")->GetText();
         const char* link = item->FirstChildElement("link")->GetText();
         const char* description = item->FirstChildElement("description")->GetText();
 
         // Create a feed_item object and add it to the feedItems vector
-        feed_item newItem(title ? title : "", link ? link : "", description ? description : "");
+        feed_item newItem(title ? title : "", pubDate ? pubDate : "" ,link ? link : "", description ? description : "");
         feedItems.push_back(newItem); // Store the title in the vector        
         
         item = item->NextSiblingElement("item");
+        // TODO: Add special character handling for title, link, and description e.g ampersand, apostrophe, etc.
+
     }
     std::cout << "Feed fetched and parsed successfully." << std::endl;   
 }
 
 void RSSReader::displayFeedItems() const {
+    // Check if there are any feed items to display
+    if (feedItems.empty()) {
+        std::cout << "No feed items available to display." << std::endl;
+        return;
+    }
+    // Display the feed items
     std::cout << "Displaying feed items..." << std::endl;
     // Iterate over the feed items and display them
     for (const auto& item : feedItems) {
+        // Display the feed item details
+        // Title
+        fmt::print(fmt::emphasis::bold, "Title: ");
+        fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}{}{}\n", RED, item.title, RESET);
 
-        std::cout << "Title: " << item.title << std::endl;
-        std::cout << "Description: " << item.description << std::endl;
-        std::cout << "Link: " << item.link << std::endl;
+        // Publication Date
+        fmt::print(fmt::emphasis::bold, "Publication Date: ");
+        fmt::print("{}\n", item.pubDate);
+
+        // Description
+        fmt::print(fmt::emphasis::bold, "Description: ");
+        fmt::print("{}\n", item.description);
+                
+        // Link
+        fmt::print(fmt::emphasis::bold, "Link: ");
+        fmt::print(fmt::emphasis::underline, "{}{}{}\n", BLUE, item.link, RESET);
         std::cout << "----------------------------------------" << std::endl;
     }
 }
