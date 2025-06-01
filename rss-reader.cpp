@@ -1,5 +1,6 @@
 #include "rss-reader.h"
 
+
 // Constructor implementation
 // Default constructor
 RSSReader::RSSReader() {
@@ -149,6 +150,31 @@ void RSSReader::displayFeedItems() const {
         fmt::print(fmt::emphasis::underline, "{}{}{}\n", BLUE, item.link, RESET);
         std::cout << "----------------------------------------" << std::endl;
     }
+}
+
+void RSSReader::SaveFeedsToFile(const std::string& filename, const std::vector<Feed> &feeds) {
+    // Open the file in write mode
+    std::ofstream outFile(filename);
+    if (!outFile) {
+        std::cerr << "Error opening file for writing: " << filename << std::endl;
+        return;
+    }
+    // std::vector<Feed> feeds = RSSReader().getAvailableFeeds(); // Get the available feeds
+    // Write the feeds to the file
+    for (const auto& feed : feeds) {
+        outFile << feed.FeedName << "," << feed.GetFeedUrl() << std::endl;
+        std::cout << "Feed saved: " << feed.FeedName << " (" << feed.GetFeedUrl() << ")" << std::endl;
+    }
+
+    outFile.close();
+    // std::cout << "Feeds saved to file: " << filename << std::endl;
+
+    // for (const auto& feed : feeds) {
+    //     outFile << feed.FeedName << "," << feed.GetFeedUrl() << std::endl;
+    // }
+
+    // outFile.close();
+    // std::cout << "Feeds saved to file: " << filename << std::endl;
 }
 
 // Callback function to write data fetched by libcurl
