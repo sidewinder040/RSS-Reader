@@ -33,7 +33,7 @@ public:
 
     // Methods for saving and loading feeds
     void SaveFeedsToFile(const std::string& filename, const std::vector<Feed> &feeds);
-    // void LoadFeedsFromFile(const std::string& filename);
+    void LoadFeedsFromFile(const std::string& filenam);
     
 private:
     std::string feedUrl; // URL of the RSS feed

@@ -21,18 +21,15 @@ int main()
 
     // Add some Feed objects to the RSSReader
     RSSReader rssReader;
-    rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "Techcrunch"));
-    rssReader.AddFeed(Feed("https://www.wired.com/feed/rss",  "Wired Top Stories"));
-    rssReader.AddFeed(Feed("http://feeds.windowscentral.com/wmexperts", "Windows Central"));
-    rssReader.AddFeed(Feed("https://www.bleepingcomputer.com/feed/", "Bleeping Computer"));
-    rssReader.AddFeed(Feed("https://www.cnet.com/rss/news/", "CNET News"));
-    rssReader.AddFeed(Feed("https://www.zdnet.com/news/rss.xml", "ZDNet News"));
-    rssReader.AddFeed(Feed("https://feeds.macrumors.com/MacRumors-All", "Mac Rumors"));
-    rssReader.AddFeed(Feed("https://www.theverge.com/rss/index.xml", "The Verge"));
-    rssReader.AddFeed(Feed("https://www.engadget.com/rss.xml", "Engadget"));
-    rssReader.AddFeed(Feed("https://www.techradar.com/rss", "TechRadar"));
-    rssReader.AddFeed(Feed("https://www.tomshardware.com/feeds/all", "Tom's Hardware"));
-    rssReader.AddFeed(Feed("https://www.thurrott.com/blog/rss", "Thurrott Blog"));
+
+    // Load feeds from file if it exists
+    rssReader.LoadFeedsFromFile(FEED_FILE);
+    // If no feeds are loaded, add a default feed
+    if (rssReader.getAvailableFeeds().empty()) {
+        std::cout << "No feeds loaded from file. Adding default feed." << std::endl;
+        rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "TechCrunch"));
+    }
+
     // Display the available feeds
     std::cout << "Available Feeds:" << std::endl;
     ListAvailableFeeds(rssReader);
@@ -41,6 +38,7 @@ int main()
     std::cout << "Select a feed to fetch (1-" << rssReader.getAvailableFeeds().size() << "): ";
     int feedIndex;
     std::cin >> feedIndex;
+
     // Validate the feed index
     if (feedIndex < 1 || feedIndex > (int)rssReader.getAvailableFeeds().size()) {
         std::cout << "Invalid feed index. Using default feed URL." << std::endl;
@@ -59,7 +57,7 @@ int main()
     
     // Save the feeds to a file
     rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
-    std::cout << "Feeds saved to file: " << FEED_FILE << std::endl;
+    // std::cout << "Feeds saved to file: " << FEED_FILE << std::endl;
     return 0;
 }
 
