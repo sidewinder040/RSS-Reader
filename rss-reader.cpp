@@ -3,14 +3,7 @@
 // Constructor implementation
 // Default constructor
 RSSReader::RSSReader() {
-    // Initialize the feed URLs
-    // Some example feeds
-    // Feed feed1("Techcrunch", "https://techcrunch.com/feed");
-    // Feed feed2("BBC", "http://feeds.bbci.co.uk/news/rss.xml");
-    // Feed feed3("CNN", "http://rss.cnn.com/rss/edition.rss");
-    // feeds.push_back(feed1);
-    // feeds.push_back(feed2);
-    // feeds.push_back(feed3);
+    
 }    
 
 RSSReader::RSSReader(const std::string& feedName, const std::string& feedUrl) {
@@ -161,7 +154,8 @@ void RSSReader::SaveFeedsToFile(const std::string& filename, const std::vector<F
     
     // Write the feeds to the file
     for (const auto& feed : feeds) {
-        outFile << feed.FeedName << "," << feed.GetFeedUrl() << std::endl;
+        outFile << feed.FeedName << "," << feed.GetFeedUrl() 
+        << "," << feed.FeedScore << std::endl;
         // std::cout << "Feed saved: " << feed.FeedName << " (" << feed.GetFeedUrl() << ")" << std::endl;
     }
     outFile.close();
@@ -185,6 +179,7 @@ void RSSReader::LoadFeedsFromFile(const std::string& filename) {
         if (commaPos != std::string::npos) {
             std::string feedName = line.substr(0, commaPos);
             std::string feedUrl = line.substr(commaPos + 1);
+            std::string scoreStr = feedUrl.substr(feedUrl.find_last_of(',') + 1);
             feeds.push_back(Feed(feedUrl, feedName));
             // std::cout << "Feed loaded: " << feedName << " (" << feedUrl << ")" << std::endl;
         }
