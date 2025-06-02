@@ -20,6 +20,7 @@ RSSReader::RSSReader(const std::string& feedName, const std::string& feedUrl) {
 
 void RSSReader::AddFeed(const Feed& feed) {
     feeds.push_back(feed);
+    feeds.back().FeedScore = Feed::Unscored; // Default score is Unscored
 }
 void RSSReader::RemoveFeed(const std::string& feedName) {
     // Find the feed with the given URL and remove it from the vector
@@ -178,9 +179,19 @@ void RSSReader::LoadFeedsFromFile(const std::string& filename) {
         size_t commaPos = line.find(',');
         if (commaPos != std::string::npos) {
             std::string feedName = line.substr(0, commaPos);
-            std::string feedUrl = line.substr(commaPos + 1);
-            std::string scoreStr = feedUrl.substr(feedUrl.find_last_of(',') + 1);
+            std::string feedUrl = line.substr(commaPos + 1, line.find(',', commaPos + 1) - commaPos - 1);
+            std::string scoreStr = line.substr(line.find_last_of(',') + 1);
             feeds.push_back(Feed(feedUrl, feedName));
+            // Set the feed score based on the score string
+            if (scoreStr == "0") {
+                feeds.back().FeedScore = Feed::Unscored;
+            } else if (scoreStr == "1") {
+                feeds.back().FeedScore = Feed::Low;
+            } else if (scoreStr == "2") {
+                feeds.back().FeedScore = Feed::Medium;
+            } else if (scoreStr == "3") {
+                feeds.back().FeedScore = Feed::High;
+            }
             // std::cout << "Feed loaded: " << feedName << " (" << feedUrl << ")" << std::endl;
         }
     }
