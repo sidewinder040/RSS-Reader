@@ -4,6 +4,11 @@
 #include <fmt/color.h>
 #include <fmt/format.h>
 
+<<<<<<< HEAD
+=======
+constexpr const char* FEED_FILE = "feeds.txt"; // File to save feeds
+
+>>>>>>> main
 // ANSI escape codes for colors
 // constexpr const char* RED = "\033[31m";
 // constexpr const char* GREEN = "\033[32m";
@@ -19,6 +24,7 @@ int main()
 
     // Add some Feed objects to the RSSReader
     RSSReader rssReader;
+<<<<<<< HEAD
     rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "Techcrunch"));
     rssReader.AddFeed(Feed("https://www.wired.com/feed/rss",  "Wired Top Stories"));
     rssReader.AddFeed(Feed("http://feeds.windowscentral.com/wmexperts", "Windows Central"));
@@ -31,6 +37,17 @@ int main()
     rssReader.AddFeed(Feed("https://www.techradar.com/rss", "TechRadar"));
     rssReader.AddFeed(Feed("https://www.tomshardware.com/feeds/all", "Tom's Hardware"));
     rssReader.AddFeed(Feed("https://www.thurrott.com/blog/rss", "Thurrott Blog"));
+=======
+
+    // Load feeds from file if it exists
+    rssReader.LoadFeedsFromFile(FEED_FILE);
+    // If no feeds are loaded, add a default feed
+    if (rssReader.getAvailableFeeds().empty()) {
+        std::cout << "No feeds loaded from file. Adding default feed." << std::endl;
+        rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "TechCrunch"));
+    }
+
+>>>>>>> main
     // Display the available feeds
     std::cout << "Available Feeds:" << std::endl;
     ListAvailableFeeds(rssReader);
@@ -39,6 +56,10 @@ int main()
     std::cout << "Select a feed to fetch (1-" << rssReader.getAvailableFeeds().size() << "): ";
     int feedIndex;
     std::cin >> feedIndex;
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
     // Validate the feed index
     if (feedIndex < 1 || feedIndex > (int)rssReader.getAvailableFeeds().size()) {
         std::cout << "Invalid feed index. Using default feed URL." << std::endl;
@@ -54,6 +75,7 @@ int main()
     std::cout << "Display Feed: " << chosenName << " (" << chosenUrl << ")" << std::endl;
     rssReader.FetchFeed(feedIndex -1); // Fetch the feed using the first feed URL
     rssReader.displayFeedItems();
+<<<<<<< HEAD
     // Uncomment the following lines to enable feed removal and addition tests
     // std::cout << "Test removing a feed..." << std::endl;
     // rssReader.RemoveFeed(chosenName); // Remove the chosen feed
@@ -65,6 +87,12 @@ int main()
     // rssReader.AddFeed(Feed("https://www.example.com/rss", "Example Feed"));
     // std::cout << "Available Feeds after adding a new feed:" << std::endl;
     // ListAvailableFeeds(rssReader); // List available feeds after adding a new feed
+=======
+    
+    // Save the feeds to a file
+    rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
+    // std::cout << "Feeds saved to file: " << FEED_FILE << std::endl;
+>>>>>>> main
     return 0;
 }
 
@@ -77,4 +105,8 @@ void ListAvailableFeeds(const RSSReader& rssReader) {
         fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}Feed URL:{}\n{}", BLUE, feed.GetFeedUrl(), RESET);
         index++;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> main

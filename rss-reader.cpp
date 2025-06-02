@@ -1,5 +1,9 @@
 #include "rss-reader.h"
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 // Constructor implementation
 // Default constructor
 RSSReader::RSSReader() {
@@ -149,6 +153,47 @@ void RSSReader::displayFeedItems() const {
         fmt::print(fmt::emphasis::underline, "{}{}{}\n", BLUE, item.link, RESET);
         std::cout << "----------------------------------------" << std::endl;
     }
+}
+
+void RSSReader::SaveFeedsToFile(const std::string& filename, const std::vector<Feed> &feeds) {
+    // Open the file in write mode
+    std::ofstream outFile(filename);
+    if (!outFile) {
+        std::cerr << "Error opening file for writing: " << filename << std::endl;
+        return;
+    }
+    
+    // Write the feeds to the file
+    for (const auto& feed : feeds) {
+        outFile << feed.FeedName << "," << feed.GetFeedUrl() << std::endl;
+        // std::cout << "Feed saved: " << feed.FeedName << " (" << feed.GetFeedUrl() << ")" << std::endl;
+    }
+    outFile.close();
+}
+
+void RSSReader::LoadFeedsFromFile(const std::string& filename) {
+    // Open the file in read mode
+    std::ifstream inFile(filename);
+    if (!inFile) {
+        std::cerr << "Error opening file for reading: " << filename << std::endl;
+        return;
+    }
+    
+    // Clear the existing feeds vector
+    // feeds.clear();
+    
+    // Read the feeds from the file
+    std::string line;
+    while (std::getline(inFile, line)) {
+        size_t commaPos = line.find(',');
+        if (commaPos != std::string::npos) {
+            std::string feedName = line.substr(0, commaPos);
+            std::string feedUrl = line.substr(commaPos + 1);
+            feeds.push_back(Feed(feedUrl, feedName));
+            // std::cout << "Feed loaded: " << feedName << " (" << feedUrl << ")" << std::endl;
+        }
+    }
+    inFile.close();
 }
 
 // Callback function to write data fetched by libcurl
