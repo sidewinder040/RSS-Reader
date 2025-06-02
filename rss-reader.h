@@ -5,10 +5,7 @@
 #include <curl/curl.h>
 #include "tinyxml2.h"
 #include <vector>
-<<<<<<< HEAD
-=======
 #include <algorithm>
->>>>>>> main
 #include "feed.h"
 #include "feed-item.h"
 #include <fmt/core.h>
@@ -33,13 +30,10 @@ public:
 
     void AddFeed(const Feed& feed);
     void RemoveFeed(const std::string& feedUrl);
-<<<<<<< HEAD
-=======
 
     // Methods for saving and loading feeds
     void SaveFeedsToFile(const std::string& filename, const std::vector<Feed> &feeds);
     void LoadFeedsFromFile(const std::string& filenam);
->>>>>>> main
     
 private:
     std::string feedUrl; // URL of the RSS feed

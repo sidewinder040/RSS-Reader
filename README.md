@@ -7,23 +7,12 @@ This RSS Reader is by expanding a suggestion for a basic RSS reader suggested by
 * feet-item.cpp - (Model) This is used as an object to contain Feed, news items.
 * main.cpp - Calls rss-reader only (not Model objects), setting out the view output/formatting.
 
-<<<<<<< HEAD
-=======
-## Current Features
-* Loads and saves current feeds, an example file is included with tested RSS Feeds.
-* User selects a Feed from the list of available feeds, to display its news items.
-
->>>>>>> main
 ## To Do Items
 
 - [x] Feed Object for multiple feed sources capability.
 - [ ] A menu for Selecting, Adding, Removing and Rating feeds.
 - [x] Vector of feeds. 
-<<<<<<< HEAD
-- [ ] Store feeds in a file and retrieve them on startup.
-=======
 - [x] Store feeds in a file and retrieve them on startup.
->>>>>>> main
 - [x] Maybe add fmt library for better feed formating (especially links).
 
 ## Ideas

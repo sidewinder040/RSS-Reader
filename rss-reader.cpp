@@ -1,9 +1,5 @@
 #include "rss-reader.h"
 
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 // Constructor implementation
 // Default constructor
 RSSReader::RSSReader() {
