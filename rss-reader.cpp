@@ -3,24 +3,14 @@
 
 // Constructor implementation
 // Default constructor
-RSSReader::RSSReader() {
-    // Initialize the feed URLs
-    // Some example feeds
-    // Feed feed1("Techcrunch", "https://techcrunch.com/feed");
-    // Feed feed2("BBC", "http://feeds.bbci.co.uk/news/rss.xml");
-    // Feed feed3("CNN", "http://rss.cnn.com/rss/edition.rss");
-    // feeds.push_back(feed1);
-    // feeds.push_back(feed2);
-    // feeds.push_back(feed3);
-}    
+RSSReader::RSSReader() { }    
 
 RSSReader::RSSReader(const std::string& feedName, const std::string& feedUrl) {
-    // TODO: Initialize feeds with a Vector of feed objects from a file or database
     // Add given feed URL to the feeds vector
     AddFeed(Feed(feedName, feedUrl));
 
     // Constructor implementation
-   std::cout << "RSSReader initialized with feed URL: " << feedUrl << std::endl;
+    std::cout << "RSSReader initialized with feed URL: " << feedUrl << std::endl;
 
     // Initialize the feed URL
     this->feedUrl = feedUrl;
@@ -88,33 +78,29 @@ void RSSReader::FetchFeed(int feedIndex)
     // Check if the readBuffer is empty
     if (readBuffer.empty()) {
         std::cout << "No data fetched from the selected feed URL." << std::endl;
-        // return 1;
         return;
     }   
-
-    // std::cout << readBuffer << std::endl; // Print the fetched feed content
-
+    // Parse the XML data using tinyxml2
     tinyxml2::XMLDocument doc;
     if (doc.Parse(readBuffer.c_str()) != tinyxml2::XML_SUCCESS) {
         std::cout << "Failed to parse XML" << std::endl;
-        // return 1;
+        return;
     }
 
     tinyxml2::XMLElement* root = doc.FirstChildElement("rss");
     if (!root) {
         std::cout << "No RSS element found" << std::endl;
-        // return 1;
+        return;
     }
 
     tinyxml2::XMLElement* channel = root->FirstChildElement("channel");
     if (!channel) {
         std::cout << "No channel element found" << std::endl;
-        // return 1;
+        return;
     }
 
     tinyxml2::XMLElement* item = channel->FirstChildElement("item");
 
-    // TODO: Parse the feed items and store them in the feedItems vector
     while (item) {
         const char* title = item->FirstChildElement("title")->GetText();
         const char* pubDate = item->FirstChildElement("pubDate")->GetText();
@@ -127,7 +113,6 @@ void RSSReader::FetchFeed(int feedIndex)
         
         item = item->NextSiblingElement("item");
         // TODO: Add special character handling for title, link, and description e.g ampersand, apostrophe, etc.
-
     }
     std::cout << "Feed fetched and parsed successfully." << std::endl;   
 }
@@ -153,7 +138,9 @@ void RSSReader::displayFeedItems() const {
         // Link
         fmt::print(fmt::emphasis::bold, "Link: ");
         fmt::print(fmt::emphasis::underline, "{}{}{}\n", BLUE, item.link, RESET);
-        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "------------------------"
+            << "------------------------" 
+            << std::endl;
     }
 }
 
@@ -181,9 +168,6 @@ void RSSReader::LoadFeedsFromFile(const std::string& filename) {
         return;
     }
     
-    // Clear the existing feeds vector
-    // feeds.clear();
-    
     // Read the feeds from the file
     std::string line;
     while (std::getline(inFile, line)) {
@@ -192,7 +176,6 @@ void RSSReader::LoadFeedsFromFile(const std::string& filename) {
             std::string feedName = line.substr(0, commaPos);
             std::string feedUrl = line.substr(commaPos + 1);
             feeds.push_back(Feed(feedUrl, feedName));
-            // std::cout << "Feed loaded: " << feedName << " (" << feedUrl << ")" << std::endl;
         }
     }
     inFile.close();

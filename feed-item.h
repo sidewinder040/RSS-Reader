@@ -14,7 +14,6 @@ public:
     std::string pubDate;
     std::string link;
     std::string description;
-    // std::string pubDate;
 };
 
 

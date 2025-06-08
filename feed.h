@@ -1,5 +1,5 @@
+#pragma once
 #include <string>
-
 
 class Feed
 {
@@ -22,7 +22,6 @@ public:
     ~Feed() { }
     std::string GetFeedUrl() const { return FeedUrl; } // Get the feed URL
     void SetFeedScore(EnumScore score); // Set the feed score
-    
 };
 
 

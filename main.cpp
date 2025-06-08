@@ -1,11 +1,4 @@
-#include <fmt/core.h>
-#include <fmt/color.h>
-#include <fmt/format.h>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include "rss-reader.h"
+#include <main.hpp>
 
 constexpr const char* FEED_FILE = "feeds.txt"; // File to save feeds
 
