@@ -1,4 +1,4 @@
-#include <main.hpp>
+#include "main.hpp"
 
 constexpr const char* FEED_FILE = "feeds.txt"; // File to save feeds
 
