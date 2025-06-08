@@ -10,10 +10,14 @@ CXXFLAGS += $(LDFLAGS)
 # Target and source files
 TARGET := rss-reader
 SRC := feed.cpp feed-item.cpp rss-reader.cpp main.cpp
+OBJS := feed.o feed-item.o rss-reader.o main.o tinyxml2.o
 
 # Build target
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC)
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Clean target
 clean:

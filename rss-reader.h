@@ -1,4 +1,7 @@
 #pragma once
+#include <fmt/core.h>
+#include <fmt/color.h>
+#include <fmt/format.h>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -8,9 +11,6 @@
 #include <algorithm>
 #include "feed.h"
 #include "feed-item.h"
-#include <fmt/core.h>
-#include <fmt/color.h>
-#include <fmt/format.h>
 
 class RSSReader {
 public:
@@ -30,6 +30,7 @@ public:
 
     void AddFeed(const Feed& feed);
     void RemoveFeed(const std::string& feedUrl);
+    void RemoveFeedByIndex(int index);
 
     // Methods for saving and loading feeds
     void SaveFeedsToFile(const std::string& filename, const std::vector<Feed> &feeds);

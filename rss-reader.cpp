@@ -42,6 +42,16 @@ void RSSReader::RemoveFeed(const std::string& feedName) {
     }
 }
 
+void RSSReader::RemoveFeedByIndex(int index) {
+    if (index < 0 || index >= (int)feeds.size()) {
+        std::cout << "Invalid feed index." << std::endl;
+        return;
+    }
+    std::string feedName = feeds[index].FeedName;
+    feeds.erase(feeds.begin() + index);
+    std::cout << "Feed removed: " << feedName << std::endl;
+}
+
 void RSSReader::FetchFeed(int feedIndex) 
 {
     // Check if the feed index is valid
@@ -130,21 +140,16 @@ void RSSReader::displayFeedItems() const {
     }
     // Display the feed items
     std::cout << "Displaying feed items..." << std::endl;
-    // Iterate over the feed items and display them
     for (const auto& item : feedItems) {
-        // Display the feed item details
         // Title
         fmt::print(fmt::emphasis::bold, "Title: ");
         fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}{}{}\n", RED, item.title, RESET);
-
         // Publication Date
         fmt::print(fmt::emphasis::bold, "Publication Date: ");
         fmt::print("{}\n", item.pubDate);
-
         // Description
         fmt::print(fmt::emphasis::bold, "Description: ");
         fmt::print("{}\n", item.description);
-                
         // Link
         fmt::print(fmt::emphasis::bold, "Link: ");
         fmt::print(fmt::emphasis::underline, "{}{}{}\n", BLUE, item.link, RESET);

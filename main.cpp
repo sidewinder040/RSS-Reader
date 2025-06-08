@@ -1,8 +1,11 @@
-#include<iostream>
-#include "rss-reader.h"
 #include <fmt/core.h>
 #include <fmt/color.h>
 #include <fmt/format.h>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include "rss-reader.h"
 
 constexpr const char* FEED_FILE = "feeds.txt"; // File to save feeds
 
@@ -14,50 +17,85 @@ constexpr const char* RESET = "\033[0m";
 
 void ListAvailableFeeds(const RSSReader& rssReader);
 
-int main()
+int main(int argc, char** argv)
 {
-    std::cout << "RSS-Reader Prototype" << std::endl;
-    std::cout << "====================" << std::endl;
+    bool list = false;
+    int show_index = -1;
+    std::vector<std::string> add_args;
+    int delete_index = -1;
+    bool show_version = false;
+    bool show_help = false;
 
-    // Add some Feed objects to the RSSReader
+    // Simple manual argument parsing
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg == "-l" || arg == "--list") list = true;
+        else if ((arg == "-s" || arg == "--show") && i + 1 < argc) show_index = std::stoi(argv[++i]);
+        else if ((arg == "-a" || arg == "--add") && i + 2 < argc) {
+            add_args.push_back(argv[++i]);
+            add_args.push_back(argv[++i]);
+        }
+        else if ((arg == "-d" || arg == "--delete") && i + 1 < argc) delete_index = std::stoi(argv[++i]);
+        else if (arg == "-v" || arg == "--version") show_version = true;
+        else if (arg == "-h" || arg == "--help") show_help = true;
+    }
+
     RSSReader rssReader;
-
-    // Load feeds from file if it exists
     rssReader.LoadFeedsFromFile(FEED_FILE);
-    // If no feeds are loaded, add a default feed
     if (rssReader.getAvailableFeeds().empty()) {
-        std::cout << "No feeds loaded from file. Adding default feed." << std::endl;
         rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "TechCrunch"));
     }
 
-    // Display the available feeds
-    std::cout << "Available Feeds:" << std::endl;
-    ListAvailableFeeds(rssReader);
-    // Prompt the user to select a feed
-    std::cout << "----------------------------------------" << std::endl;
-    std::cout << "Select a feed to fetch (1-" << rssReader.getAvailableFeeds().size() << "): ";
-    int feedIndex;
-    std::cin >> feedIndex;
-
-    // Validate the feed index
-    if (feedIndex < 1 || feedIndex > (int)rssReader.getAvailableFeeds().size()) {
-        std::cout << "Invalid feed index. Using default feed URL." << std::endl;
-        feedIndex = 1; // Default to the first feed if index is invalid
+    if (list) {
+        std::cout << "Available Feeds:" << std::endl;
+        ListAvailableFeeds(rssReader);
+        return 0;
     }
-    std::cout << "Fetching RSS feed..." << std::endl;
-    // RSSReader reader("Techchrunch", "https://techcrunch.com/feed/");
-
-    /*** Disabled Feed Fetch and Display ***/
-    // Show chosen feed URL
-    std::string chosenUrl = rssReader.getAvailableFeeds()[feedIndex - 1].GetFeedUrl();
-    std::string chosenName = rssReader.getAvailableFeeds()[feedIndex - 1].FeedName;
-    std::cout << "Display Feed: " << chosenName << " (" << chosenUrl << ")" << std::endl;
-    rssReader.FetchFeed(feedIndex -1); // Fetch the feed using the first feed URL
-    rssReader.displayFeedItems();
-    
-    // Save the feeds to a file
-    rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
-    // std::cout << "Feeds saved to file: " << FEED_FILE << std::endl;
+    if (show_index > 0) {
+        int feedIndex = show_index;
+        if (feedIndex < 1 || feedIndex > (int)rssReader.getAvailableFeeds().size()) {
+            std::cout << "Invalid feed index." << std::endl;
+            return 1;
+        }
+        std::string chosenUrl = rssReader.getAvailableFeeds()[feedIndex - 1].GetFeedUrl();
+        std::string chosenName = rssReader.getAvailableFeeds()[feedIndex - 1].FeedName;
+        std::cout << "Display Feed: " << chosenName << " (" << chosenUrl << ")" << std::endl;
+        rssReader.FetchFeed(feedIndex - 1);
+        rssReader.displayFeedItems();
+        return 0;
+    }
+    if (!add_args.empty()) {
+        rssReader.AddFeed(Feed(add_args[1], add_args[0]));
+        rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
+        std::cout << "Feed added: " << add_args[0] << " (" << add_args[1] << ")" << std::endl;
+        return 0;
+    }
+    if (delete_index > 0) {
+        int feedIndex = delete_index;
+        if (feedIndex < 1 || feedIndex > (int)rssReader.getAvailableFeeds().size()) {
+            std::cout << "Invalid feed index." << std::endl;
+            return 1;
+        }
+        std::string feedName = rssReader.getAvailableFeeds()[feedIndex - 1].FeedName;
+        rssReader.RemoveFeed(feedName);
+        rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
+        std::cout << "Feed deleted: " << feedName << std::endl;
+        return 0;
+    }
+    if (show_version) {
+        std::cout << "RSS-Reader version 1.0.0" << std::endl;
+        return 0;
+    }
+    if (show_help || argc == 1) {
+        std::cout << "Usage: rss-reader [OPTIONS]\n"
+                  << "  -l, --list                List available feeds\n"
+                  << "  -s, --show <index>        Show all news items in the selected feed\n"
+                  << "  -a, --add <name> <url>    Add a new feed\n"
+                  << "  -d, --delete <index>      Delete a feed by index\n"
+                  << "  -h, --help                Show this help message\n"
+                  << "  -v, --version             Show application version\n";
+        return 0;
+    }
     return 0;
 }
 
