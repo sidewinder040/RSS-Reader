@@ -1,25 +1,23 @@
 # Makefile for rss-reader
 
 # Compiler and flags
-CXX := clang++
-CXXFLAGS := -Wall -ggdb -Wextra -std=c++20
-LIBS := fmt libcurl tinyxml2
-LDFLAGS := `pkg-config --libs --cflags $(LIBS)`
-CXXFLAGS += $(LDFLAGS)
+CXX = clang++
+CXXFLAGS = -Wall -ggdb -Wextra -std=c++20 $(shell pkg-config --cflags fmt libcurl tinyxml2)
+LDFLAGS = $(shell pkg-config --libs fmt libcurl tinyxml2)
 
 # Target and source files
-TARGET := rss-reader
-SRC := feed.cpp feed-item.cpp rss-reader.cpp main.cpp
-OBJS := feed.o feed-item.o rss-reader.o main.o tinyxml2.o
+TARGET = rss-reader
+SRCS = feed.cpp feed-item.cpp rss-reader.cpp main.cpp tinyxml2.cpp
+OBJS = $(SRCS:.cpp=.o)
 
 # Build target
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+	$(CXX) $(OBJS) $(LDFLAGS) -o $(TARGET)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+.PHONY: clean
 # Clean target
 clean:
-	rm -f $(TARGET)
-	rm -f *.o
+	rm -f $(OBJS) $(TARGET)
