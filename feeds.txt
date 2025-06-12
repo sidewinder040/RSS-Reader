@@ -9,4 +9,3 @@ The Verge,https://www.theverge.com/rss/index.xml
 Engadget,https://www.engadget.com/rss.xml
 TechRadar,https://www.techradar.com/rss
 Tom's Hardware,https://www.tomshardware.com/feeds/all
-Thurrott Blog,https://www.thurrott.com/blog/rss

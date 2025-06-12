@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <curl/curl.h>
-#include "tinyxml2.h"
+#include <tinyxml2.h>
 #include <vector>
 #include <algorithm>
 #include "feed.h"

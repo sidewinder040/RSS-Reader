@@ -7,7 +7,7 @@ LDFLAGS = $(shell pkg-config --libs fmt libcurl tinyxml2)
 
 # Target and source files
 TARGET = rss-reader
-SRCS = feed.cpp feed-item.cpp rss-reader.cpp main.cpp tinyxml2.cpp
+SRCS = feed.cpp feed-item.cpp rss-reader.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 # Build target
