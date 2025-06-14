@@ -12,18 +12,42 @@ This RSS Reader is based on a suggested implementation of a basic RSS reader sug
 * User selects a Feed from the list of available feeds, to display its news items.
 
 ## To Do Items
-
 - [x] Feed Object for multiple feed sources capability.
 - [x] Command-line argument parsing for Selecting, Adding, Removing and Rating feeds.
 - [x] Vector of feeds. 
 - [x] Store feeds in a file and retrieve them on startup.
 - [x] Maybe add fmt library for better feed formating (especially links).
+- [ ] Investigate FMT library options, i.e alignment and other improvements.
 
 ## Regresion to Fix
 - [x] **FIXED** Somewhere along the line saving to file no longer stores ratings. Reimplement this.
 
 ## Ideas
+* Show a summary of news:
+1) Today's feeds only
+2) Limit the number of news items shown for each Feed.
 
-Summary of headlines with item ID
-Display description of item ID, then usse the ID No. to display further details.
-Add a limit feature, by number of items or frome the last n days.
+## Current Output
+**Help Info**
+```
+$ ./rss-reader -h
+Usage: rss-reader [OPTIONS]
+  -l, --list                List available feeds
+  -s, --show <index>        Show all news items in the selected feed
+  -a, --add <name> <url>    Add a new feed
+  -d, --delete <index>      Delete a feed by index
+  -r, --rate <index> <rating>  Rate a feed (1=Low, 2=Medium, 3=High)
+  -h, --help                Show this help message
+  -v, --version             Show application version
+```
+
+**List Feeds**
+```
+$ ./rss-reader -l
+Available Feeds:
+[1] Feed Name:Techcrunch                Feed URL:https://techcrunch.com/feed/   Score: High
+[2] Feed Name:Wired Top Stories         Feed URL:https://www.wired.com/feed/rss Score: Unscored
+[3] Feed Name:Windows Central           Feed URL:http://feeds.windowscentral.com/wmexperts      Score: Unscored
+[4] Feed Name:Bleeping Computer         Feed URL:https://www.bleepingcomputer.com/feed/ Score: Medium
+[5] Feed Name:CNET News         Feed URL:https://www.cnet.com/rss/news/ Score: Unscored
+```
