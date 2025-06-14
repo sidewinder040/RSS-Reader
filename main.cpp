@@ -8,7 +8,7 @@ constexpr const char* FEED_FILE = "feeds.txt"; // File to save feeds
 constexpr const char* BLUE = "\033[34m";
 constexpr const char* RESET = "\033[0m";
 
-void ListAvailableFeeds(const RSSReader& rssReader);
+// void ListAvailableFeeds(const RSSReader& rssReader);
 
 int main(int argc, char** argv)
 {
@@ -41,6 +41,7 @@ int main(int argc, char** argv)
 
     RSSReader rssReader;
     rssReader.LoadFeedsFromFile(FEED_FILE);
+    // std::vector<Feed> feeds = rssReader.getAvailableFeeds();
     if (rssReader.getAvailableFeeds().empty()) {
         rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "TechCrunch"));
     }
@@ -113,6 +114,7 @@ int main(int argc, char** argv)
                   << "  -v, --version             Show application version\n";
         return 0;
     }
+    // rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
     return 0;
 }
 
@@ -122,7 +124,21 @@ void ListAvailableFeeds(const RSSReader& rssReader) {
         // Assuming feeds are indexed starting from 1
         fmt::print(fmt::emphasis::bold, "[{}] ", index);
         fmt::print(fmt::emphasis::bold, "Feed Name:{}\t", feed.FeedName);
-        fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}Feed URL:{}\n{}", BLUE, feed.GetFeedUrl(), RESET);
+        fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}Feed URL:{}\t{}", BLUE, feed.GetFeedUrl(), RESET);
+        // Display feed score if available with user frienncdly unum text
+        if (feed.FeedScore != Feed::UNSCORED) {
+            std::string scoreText;
+            switch (feed.FeedScore) {
+                case Feed::Low: scoreText = "Low"; break;
+                case Feed::Medium: scoreText = "Medium"; break;
+                case Feed::High: scoreText = "High"; break;
+                default: scoreText = "Unscored"; break;
+            }
+            fmt::print(fmt::emphasis::bold, "Score: {}\n", scoreText);
+        } else {
+            fmt::print(fmt::emphasis::bold, "Score: Unscored\n");
+        }
+        
         index++;
     }
 }

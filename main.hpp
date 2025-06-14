@@ -12,3 +12,5 @@
 #include <vector>
 #include <algorithm>
 #include "rss-reader.h"
+
+void ListAvailableFeeds(const RSSReader& rssReader);
