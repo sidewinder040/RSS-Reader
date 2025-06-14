@@ -18,6 +18,8 @@ int main(int argc, char** argv)
     int delete_index = -1;
     bool show_version = false;
     bool show_help = false;
+    int rate_index = -1;
+    int rate_value = -1;
 
     // Simple manual argument parsing
     for (int i = 1; i < argc; ++i) {
@@ -29,6 +31,10 @@ int main(int argc, char** argv)
             add_args.push_back(argv[++i]);
         }
         else if ((arg == "-d" || arg == "--delete") && i + 1 < argc) delete_index = std::stoi(argv[++i]);
+        else if ((arg == "-r" || arg == "--rate") && i + 2 < argc) {
+            rate_index = std::stoi(argv[++i]);
+            rate_value = std::stoi(argv[++i]);
+        }
         else if (arg == "-v" || arg == "--version") show_version = true;
         else if (arg == "-h" || arg == "--help") show_help = true;
     }
@@ -75,6 +81,23 @@ int main(int argc, char** argv)
         std::cout << "Feed deleted: " << feedName << std::endl;
         return 0;
     }
+    if (rate_index > 0 && rate_value > 0) {
+        int feedIndex = rate_index;
+        if (feedIndex < 1 || feedIndex > (int)rssReader.getAvailableFeeds().size()) {
+            std::cout << "Invalid feed index." << std::endl;
+            return 1;
+        }
+        if (rate_value < 1 || rate_value > 3) {
+            std::cout << "Invalid rating value. Use 1 (Low), 2 (Medium), or 3 (High)." << std::endl;
+            return 1;
+        }
+        // Get feeds, set score, and save
+        auto feeds = rssReader.getAvailableFeeds();
+        feeds[feedIndex - 1].SetFeedScore(static_cast<Feed::EnumScore>(rate_value));
+        rssReader.SaveFeedsToFile(FEED_FILE, feeds);
+        std::cout << "Feed '" << feeds[feedIndex - 1].FeedName << "' rated as " << rate_value << std::endl;
+        return 0;
+    }
     if (show_version) {
         std::cout << "RSS-Reader version 1.0.0" << std::endl;
         return 0;
@@ -85,6 +108,7 @@ int main(int argc, char** argv)
                   << "  -s, --show <index>        Show all news items in the selected feed\n"
                   << "  -a, --add <name> <url>    Add a new feed\n"
                   << "  -d, --delete <index>      Delete a feed by index\n"
+                  << "  -r, --rate <index> <rating>  Rate a feed (1=Low, 2=Medium, 3=High)\n"
                   << "  -h, --help                Show this help message\n"
                   << "  -v, --version             Show application version\n";
         return 0;

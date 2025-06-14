@@ -3,14 +3,15 @@
 
 class Feed
 {
-private:
-    std::string FeedUrl; // URL of the RSS feed
+public:
     enum EnumScore
     {
         Low = 1,
         Medium = 2,
         High = 3
     };
+private:
+    std::string FeedUrl; // URL of the RSS feed
     EnumScore FeedScore; // Score of the feed (Low, Medium, High)
 public:
     Feed(/* args */);
