@@ -124,7 +124,21 @@ void ListAvailableFeeds(const RSSReader& rssReader) {
         // Assuming feeds are indexed starting from 1
         fmt::print(fmt::emphasis::bold, "[{}] ", index);
         fmt::print(fmt::emphasis::bold, "Feed Name:{}\t", feed.FeedName);
-        fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}Feed URL:{}\n{}", BLUE, feed.GetFeedUrl(), RESET);
+        fmt::print(fmt::emphasis::underline | fmt::emphasis::bold, "{}Feed URL:{}\t{}", BLUE, feed.GetFeedUrl(), RESET);
+        // Display feed score if available with user frienncdly unum text
+        if (feed.FeedScore != Feed::UNSCORED) {
+            std::string scoreText;
+            switch (feed.FeedScore) {
+                case Feed::Low: scoreText = "Low"; break;
+                case Feed::Medium: scoreText = "Medium"; break;
+                case Feed::High: scoreText = "High"; break;
+                default: scoreText = "Unscored"; break;
+            }
+            fmt::print(fmt::emphasis::bold, "Score: {}\n", scoreText);
+        } else {
+            fmt::print(fmt::emphasis::bold, "Score: Unscored\n");
+        }
+        
         index++;
     }
 }
