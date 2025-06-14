@@ -175,12 +175,16 @@ void RSSReader::LoadFeedsFromFile(const std::string& filename) {
         if (commaPos != std::string::npos) {
             std::string feedName = line.substr(0, commaPos);
             std::string feedUrl = line.substr(commaPos + 1);
-            // load the feed score if available
-            size_t scorePos = feedUrl.find(',');
-            Feed::EnumScore feedScore = Feed::EnumScore::UNSCORED; // Default score
-            if (scorePos != std::string::npos) {
-                feedScore = static_cast<Feed::EnumScore>(std::stoi(feedUrl.substr(scorePos + 1)));
+            // load the feed score after the feed URl
+            
+            size_t secondCommaPos = feedUrl.find(',', commaPos + 1);
+            Feed::EnumScore feedScore = Feed::UNSCORED; // Default score
+            if (secondCommaPos != std::string::npos) {
+                feedScore = static_cast<Feed::EnumScore>(std::stoi(feedUrl.substr(secondCommaPos + 1)));
+                feedUrl = feedUrl.substr(0, secondCommaPos); // Extract the URL part
             }
+            // Create a Feed object and add it to the feeds vector
+            // std::cout << "Feed loaded: " << feedName << " (" << feedUrl << ")" << std::endl;
 
             feeds.push_back(Feed(feedUrl, feedName, feedScore));
         }
