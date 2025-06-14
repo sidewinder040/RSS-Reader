@@ -1,7 +1,7 @@
 Techcrunch,https://techcrunch.com/feed/,3
 Wired Top Stories,https://www.wired.com/feed/rss,0
 Windows Central,http://feeds.windowscentral.com/wmexperts,0
-Bleeping Computer,https://www.bleepingcomputer.com/feed/,0
+Bleeping Computer,https://www.bleepingcomputer.com/feed/,2
 CNET News,https://www.cnet.com/rss/news/,0
 ZDNet News,https://www.zdnet.com/news/rss.xml,0
 Mac Rumors,https://feeds.macrumors.com/MacRumors-All,0
