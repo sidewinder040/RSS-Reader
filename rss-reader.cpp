@@ -154,7 +154,7 @@ void RSSReader::SaveFeedsToFile(const std::string& filename, const std::vector<F
     
     // Write the feeds to the file
     for (const auto& feed : feeds) {
-        outFile << feed.FeedName << "," << feed.GetFeedUrl() << std::endl;
+        outFile << feed.FeedName << "," << feed.GetFeedUrl() << "," << static_cast<int>(feed.FeedScore) << std::endl;
         // std::cout << "Feed saved: " << feed.FeedName << " (" << feed.GetFeedUrl() << ")" << std::endl;
     }
     outFile.close();
@@ -175,7 +175,14 @@ void RSSReader::LoadFeedsFromFile(const std::string& filename) {
         if (commaPos != std::string::npos) {
             std::string feedName = line.substr(0, commaPos);
             std::string feedUrl = line.substr(commaPos + 1);
-            feeds.push_back(Feed(feedUrl, feedName));
+            // load the feed score if available
+            size_t scorePos = feedUrl.find(',');
+            Feed::EnumScore feedScore = Feed::EnumScore::UNSCORED; // Default score
+            if (scorePos != std::string::npos) {
+                feedScore = static_cast<Feed::EnumScore>(std::stoi(feedUrl.substr(scorePos + 1)));
+            }
+
+            feeds.push_back(Feed(feedUrl, feedName, feedScore));
         }
     }
     inFile.close();

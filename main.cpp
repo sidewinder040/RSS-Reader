@@ -8,7 +8,7 @@ constexpr const char* FEED_FILE = "feeds.txt"; // File to save feeds
 constexpr const char* BLUE = "\033[34m";
 constexpr const char* RESET = "\033[0m";
 
-void ListAvailableFeeds(const RSSReader& rssReader);
+// void ListAvailableFeeds(const RSSReader& rssReader);
 
 int main(int argc, char** argv)
 {
@@ -41,6 +41,7 @@ int main(int argc, char** argv)
 
     RSSReader rssReader;
     rssReader.LoadFeedsFromFile(FEED_FILE);
+    // std::vector<Feed> feeds = rssReader.getAvailableFeeds();
     if (rssReader.getAvailableFeeds().empty()) {
         rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "TechCrunch"));
     }
@@ -113,6 +114,7 @@ int main(int argc, char** argv)
                   << "  -v, --version             Show application version\n";
         return 0;
     }
+    // rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
     return 0;
 }
 
