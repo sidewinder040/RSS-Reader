@@ -19,6 +19,9 @@ This RSS Reader is based on a suggested implementation of a basic RSS reader sug
 - [x] Store feeds in a file and retrieve them on startup.
 - [x] Maybe add fmt library for better feed formating (especially links).
 
+## Regresion to Fix
+- [ ] **Bug** Somewhere along the line saving to file no longer stores ratings. Reimplement this.
+
 ## Ideas
 
 Summary of headlines with item ID
