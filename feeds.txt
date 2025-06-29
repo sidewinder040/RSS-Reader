@@ -10,3 +10,4 @@ Engadget,https://www.engadget.com/rss.xml,0
 TechRadar,https://www.techradar.com/rss,0
 Tom's Hardware,https://www.tomshardware.com/feeds/all,0
 Thurrott Blog,https://www.thurrott.com/blog/rss,1
+Test,http://Test-URL.com,0

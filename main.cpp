@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-constexpr const char* FEED_FILE = "feeds.txt"; // File to save feeds
+constexpr const char* FEED_FILE = "/Users/markcrouch/.config/rss-reader/feeds.txt"; // File to save feeds
 
 // ANSI escape codes for colors
 // constexpr const char* RED = "\033[31m";
