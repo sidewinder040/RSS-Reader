@@ -1,6 +1,7 @@
 #include "main.hpp"
 
-constexpr const char* FEED_FILE = "/Users/markcrouch/.config/rss-reader/feeds.txt"; // File to save feeds
+
+const std::string FEED_FILE = "/feeds.txt"; // File to save feeds
 
 // ANSI escape codes for colors
 // constexpr const char* RED = "\033[31m";
@@ -21,6 +22,11 @@ int main(int argc, char** argv)
     int rate_index = -1;
     int rate_value = -1;
 
+    // Check if the current working directory is set correctly
+    const std::string workingDir = fs::current_path().string();
+    std::string feedFilePath = workingDir + FEED_FILE;
+    std::cout << "Current working directory: " << feedFilePath << std::endl;
+
     // Simple manual argument parsing
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -40,7 +46,7 @@ int main(int argc, char** argv)
     }
 
     RSSReader rssReader;
-    rssReader.LoadFeedsFromFile(FEED_FILE);
+    rssReader.LoadFeedsFromFile(feedFilePath);
     // std::vector<Feed> feeds = rssReader.getAvailableFeeds();
     if (rssReader.getAvailableFeeds().empty()) {
         rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "TechCrunch"));
@@ -66,7 +72,7 @@ int main(int argc, char** argv)
     }
     if (!add_args.empty()) {
         rssReader.AddFeed(Feed(add_args[1], add_args[0]));
-        rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
+        rssReader.SaveFeedsToFile(feedFilePath, rssReader.getAvailableFeeds());
         std::cout << "Feed added: " << add_args[0] << " (" << add_args[1] << ")" << std::endl;
         return 0;
     }
@@ -78,7 +84,7 @@ int main(int argc, char** argv)
         }
         std::string feedName = rssReader.getAvailableFeeds()[feedIndex - 1].FeedName;
         rssReader.RemoveFeed(feedName);
-        rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
+        rssReader.SaveFeedsToFile(feedFilePath, rssReader.getAvailableFeeds());
         std::cout << "Feed deleted: " << feedName << std::endl;
         return 0;
     }
@@ -95,7 +101,7 @@ int main(int argc, char** argv)
         // Get feeds, set score, and save
         auto feeds = rssReader.getAvailableFeeds();
         feeds[feedIndex - 1].SetFeedScore(static_cast<Feed::EnumScore>(rate_value));
-        rssReader.SaveFeedsToFile(FEED_FILE, feeds);
+        rssReader.SaveFeedsToFile(feedFilePath, feeds);
         std::cout << "Feed '" << feeds[feedIndex - 1].FeedName << "' rated as " << rate_value << std::endl;
         return 0;
     }

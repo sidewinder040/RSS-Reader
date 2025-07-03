@@ -11,6 +11,9 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <filesystem>
 #include "rss-reader.h"
+
+namespace fs = std::filesystem;
 
 void ListAvailableFeeds(const RSSReader& rssReader);
