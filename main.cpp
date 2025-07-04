@@ -25,7 +25,7 @@ int main(int argc, char** argv)
     // Check if the current working directory is set correctly
     const std::string workingDir = fs::current_path().string();
     std::string feedFilePath = workingDir + FEED_FILE;
-    std::cout << "Current working directory: " << feedFilePath << std::endl;
+    // std::cout << "Current working directory: " << feedFilePath << std::endl;
 
     // Simple manual argument parsing
     for (int i = 1; i < argc; ++i) {
