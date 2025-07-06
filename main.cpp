@@ -1,7 +1,7 @@
 #include "main.hpp"
 
 
-const std::string FEED_FILE = "/feeds.txt"; // File to save feeds
+const std::string FEED_FILE = "rss-reader_feeds.conf"; // File to save feeds
 
 // ANSI escape codes for colors
 // constexpr const char* RED = "\033[31m";
@@ -22,10 +22,16 @@ int main(int argc, char** argv)
     int rate_index = -1;
     int rate_value = -1;
 
-    // Check if the current working directory is set correctly
-    const std::string workingDir = fs::current_path().string();
-    std::string feedFilePath = workingDir + FEED_FILE;
-    // std::cout << "Current working directory: " << feedFilePath << std::endl;
+    // Get the User's HOME directory
+    std::string homeDir;
+    try {
+        homeDir = getHomeDirectory();
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+    std::string feedFilePath = homeDir + "/.config/rss-reader/" + FEED_FILE;
+    std::cout << "Rss-reader config directory: " << feedFilePath << std::endl;
 
     // Simple manual argument parsing
     for (int i = 1; i < argc; ++i) {
@@ -47,7 +53,6 @@ int main(int argc, char** argv)
 
     RSSReader rssReader;
     rssReader.LoadFeedsFromFile(feedFilePath);
-    // std::vector<Feed> feeds = rssReader.getAvailableFeeds();
     if (rssReader.getAvailableFeeds().empty()) {
         rssReader.AddFeed(Feed("https://techcrunch.com/feed/", "TechCrunch"));
     }
@@ -120,7 +125,6 @@ int main(int argc, char** argv)
                   << "  -v, --version             Show application version\n";
         return 0;
     }
-    // rssReader.SaveFeedsToFile(FEED_FILE, rssReader.getAvailableFeeds());
     return 0;
 }
 
@@ -147,4 +151,12 @@ void ListAvailableFeeds(const RSSReader& rssReader) {
         
         index++;
     }
+}
+
+std::string getHomeDirectory() {
+    const char* home = std::getenv("HOME");
+    if (home == nullptr) {
+        throw std::runtime_error("HOME environment variable not set");
+    }
+    return std::string(home);
 }

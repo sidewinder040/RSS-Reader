@@ -17,3 +17,5 @@
 namespace fs = std::filesystem;
 
 void ListAvailableFeeds(const RSSReader& rssReader);
+
+std::string getHomeDirectory(); // Function to get the user's home directory
